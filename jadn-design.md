@@ -68,9 +68,9 @@ Book = Record
 Book.chapters = ArrayOf(Chapter){1..*}      // minItems and/or maxItems core type options
 ```
 Additional extensions support references (designating primary and foreign key fields
-within a datatype) and inheritance (static expansion of inherited type definitions)
-as shown in Figure 2:
-![Layers](images/im_layers.png)
+within a datatype) and inheritance (static expansion of inherited type definitions).
+Figure 2 illustrates the structure of a JADN IM and its relationships to other data models:
+![Layers](images/jadn_layers.png)
 
 ### Information-Centric
 An information model can be information-centric or data-centric. JADN is
