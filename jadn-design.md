@@ -10,25 +10,40 @@ structured language.
 
 JADN is a formal language that unambiguously defines information types and
 classifies data values as instances of a type. It satisfies all of the
-criteria listed in *Information Modeling Requirements* (unambiguous
+criteria listed in the OSIM *Information Modeling Requirements* (unambiguous
 definition of essential content, applicable to and independent of
-all data formats, schema is an information value), and is based
-on the following design principles:
+all data formats, schema is an information value).
+
+Figure 1 illustrates the relationship between an information model composed
+of JADN types (right), internal information values (center) and
+serialized data (left):
+
+![Structure](images/asg_serialization.png)
+
+JADN is based on the following design principles:
 
 ### Minimal Uniform Structure
 A JADN schema consists of a package header and a set of type definitions.
 Every definition:
 * has one of only 12 built-in types: five primitive, five compound, two union
 * has the same five-column structure: `[name, type, options, description, fields]`
-* defines a datatype. Datatype instances are distinguished only by their value
+* defines a datatype
 
-Every type and field name is checked against a customizable format, to enhance readability.
+Datatype instances are distinguished only by their value,
+and defining an IM using only datatypes ensures that documents/messages can be
+hashed and compared byte-by-byte for equality.
+
+Every type and field name is checked against a customizable syntax to enhance
+uniformity and readability.
 Every enumerated value and field definition has both name and numeric id,
 ensuring that all types support both human- and machine-oriented data formats.
 
 ### Namespaced Packages
-Packages have a namespace URI to support type references,
-other identifying information, and context metadata.
+Packages have a unique ID in the form of a namespace URI, other identifying
+information, and context metadata.
+Namespaces use the XML prefix mechanism to support qualified type references
+(e.g., `nc:Person`), define multi-package namespaces,
+and import definitions from one namespace into another.
 
 ### Core plus Extensions
 JADN has a core set of options that define the complete expressive
@@ -42,16 +57,20 @@ For example, the commonly-used multiplicity extension:
 ```
 Book = Record
   1 front_matter   FrontMatter
-  2 chapters       Chapter [1..*]
+  2 chapters       Chapter [1..*]           // minc and/or maxc field extension
 ```
 is unfolded into core types for processing:
 ```
 Book = Record
   1 front_matter   FrontMatter
-  2 chapters       Book.chapters
+  2 chapters       Book.chapters            // replaced by core type
 
-Book.chapters = ArrayOf(Chapter){1..*}
+Book.chapters = ArrayOf(Chapter){1..*}      // minItems and/or maxItems core type options
 ```
+Additional extensions support references (designating primary and foreign key fields
+within a datatype) and inheritance (static expansion of inherited type definitions)
+as shown in Figure 2:
+![Layers](images/im_layers.png)
 
 ### Information-Centric
 An information model can be information-centric or data-centric. JADN is
@@ -90,8 +109,6 @@ A data-centric IM defines a number of date- and time-related string types,
 such as dateTime, date, time, gYearMonth, gMonthDay, etc.
 There are two core types for binary data: hexBinary and base64Binary, both
 of which are the set of finite-length sequences of binary octets.
-
-### Datatypes
 
 ### Information Graph
 
