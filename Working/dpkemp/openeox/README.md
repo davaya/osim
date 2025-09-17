@@ -30,16 +30,6 @@ https://github.com/oasis-tcs/openeox/tree/main/eox-core-v-1-0/schema
 * Note that JSON Schema does not define a name for the EoX type, so IM translater assigns it the name "Root".
 JSON Schema should define the "EoX" object in `$defs` so that it has a name.
 
-* The first EoX field is called `$schema`, which conflicts with the
-[JSON Schema](https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-01#name-the-schema-keyword)
-definition:
-> The "$schema" keyword is both used as a JSON Schema dialect identifier and as the identifier of a resource
-> which is itself a JSON Schema, which describes the set of valid schemas written for this particular dialect.
-
-While there is no prohibition on documents using the names of reserved JSON Schema keywords for other purposes,
-it is confusing because an EoX object is not a JSON Schema. To identify the schema used to validate an EoX object,
-use a normal name, e.g., `schema` or `eox-schema` for this field.
-
 * The schema identifier is an arbitrary string. It should be defined as a string with `/uri` format
 because it refers to the [JSON Schema](https://json-schema.org/draft/2020-12/draft-bhutton-json-schema-01#name-the-id-keyword)
 `$id` "https://docs.oasis-open.org/openeox/v1.0/schema/core.json".
